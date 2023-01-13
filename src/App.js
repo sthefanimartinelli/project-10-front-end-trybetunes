@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import Login from './pages/Login';
 import Search from './pages/Search';
 import Album from './pages/Album';
@@ -7,23 +7,57 @@ import Favorites from './pages/Favorites';
 import Profile from './pages/Profile';
 import ProfileEdit from './pages/ProfileEdit';
 import NotFound from './pages/NotFound';
+import Header from './components/Header';
 
 class App extends React.Component {
   render() {
     return (
       <div>
         <p>TrybeTunes</p>
-        <BrowserRouter>
-          <Switch>
-            <Route path="/search" component={ Search } />
-            <Route path="/album/:id" component={ Album } />
-            <Route path="/favorites" component={ Favorites } />
-            <Route exact path="/profile" component={ Profile } />
-            <Route exact path="/profile/edit" component={ ProfileEdit } />
-            <Route exact path="/" component={ Login } />
-            <Route path="/" component={ NotFound } />
-          </Switch>
-        </BrowserRouter>
+        <Switch>
+          <Route
+            path="/search"
+            render={ () => (
+              <>
+                <Header />
+                <Search />
+              </>) }
+          />
+          <Route
+            path="/album/:id"
+            render={ () => (
+              <>
+                <Header />
+                <Album />
+              </>) }
+          />
+          <Route
+            path="/favorites"
+            render={ () => (
+              <>
+                <Header />
+                <Favorites />
+              </>) }
+          />
+          <Route
+            path="/profile"
+            render={ () => (
+              <>
+                <Header />
+                <Profile />
+              </>) }
+          />
+          <Route
+            path="/profile/edit"
+            render={ () => (
+              <>
+                <Header />
+                <ProfileEdit />
+              </>) }
+          />
+          <Route exact path="/" component={ Login } />
+          <Route path="/" component={ NotFound } />
+        </Switch>
       </div>
     );
   }

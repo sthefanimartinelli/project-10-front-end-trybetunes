@@ -49,7 +49,6 @@ class Search extends React.Component {
   render() {
     const { banda, onRequest, resultadoRequest,
       respostaPesquisa, msgPagina } = this.state;
-    // const { collectionId, artworkUrl100, collectionName, artistName } = resultadoRequest;
     const minInput = 2;
     return (
       <div data-testid="page-search">

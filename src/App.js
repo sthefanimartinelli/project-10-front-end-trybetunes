@@ -40,6 +40,7 @@ class App extends React.Component {
               </>) }
           />
           <Route
+            exact
             path="/profile"
             render={ () => (
               <>
@@ -48,6 +49,7 @@ class App extends React.Component {
               </>) }
           />
           <Route
+            exact
             path="/profile/edit"
             render={ () => (
               <>

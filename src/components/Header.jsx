@@ -5,28 +5,32 @@ import LoadingMsg from './LoadingMsg';
 
 class Header extends Component {
   state = {
-    loading: undefined,
-    // userName: undefined,
+    loading: false,
+    userName: undefined,
   };
 
+  componentDidMount() {
+    this.handleUser();
+  }
+
   handleUser = () => {
-    this.setState({
-      loading: true,
-    });
-    getUser().then(() => {
-      this.setState({
-        loading: false,
-        // userName: user,
-      });
-    });
-    return user;
+    this.setState(
+      { loading: true },
+      async () => {
+        const user = await getUser();
+        this.setState({
+          loading: false,
+          userName: user.name,
+        });
+      },
+    );
   };
 
   render() {
-    const { loading } = this.state;
+    const { loading, userName } = this.state;
     return (
       <header data-testid="header-component">
-        <p data-testid="header-user-name">{ this.handleUser }</p>
+        <div data-testid="header-user-name">{ userName }</div>
         { loading && <LoadingMsg /> }
         <nav>
           <ul>

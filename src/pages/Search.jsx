@@ -31,7 +31,7 @@ class Search extends React.Component {
         msgPagina: `Resultado de álbuns de: ${banda}`,
       });
     }
-    console.log(searchAlbum);
+    // console.log(searchAlbum);
     this.setState({
       banda: '',
       resultadoRequest: searchAlbum,

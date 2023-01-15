@@ -1,8 +1,42 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import searchAlbumsAPI from '../services/searchAlbumsAPI';
+import LoadingMsg from '../components/LoadingMsg';
+import FormSearch from '../components/FormSearch';
+import AlbumCard from '../components/AlbumCard';
 
 class Search extends React.Component {
   state = {
     banda: '',
+    onRequest: false,
+    resultadoRequest: [],
+    respostaPesquisa: false,
+    msgPagina: '',
+  };
+
+  searchArtistOrAlbum = async () => {
+    const { banda } = this.state;
+    this.setState({
+      onRequest: true,
+    });
+    const searchAlbum = await searchAlbumsAPI(banda);
+    if (searchAlbum.length === 0) {
+      this.setState({
+        onRequest: false,
+        msgPagina: 'Nenhum álbum foi encontrado',
+      });
+    } else {
+      this.setState({
+        onRequest: false,
+        msgPagina: `Resultado de álbuns de: ${banda}`,
+      });
+    }
+    console.log(searchAlbum);
+    this.setState({
+      banda: '',
+      resultadoRequest: searchAlbum,
+      respostaPesquisa: true,
+    });
   };
 
   handleChange = ({ target }) => {
@@ -13,30 +47,38 @@ class Search extends React.Component {
   };
 
   render() {
-    const { banda } = this.state;
+    const { banda, onRequest, resultadoRequest,
+      respostaPesquisa, msgPagina } = this.state;
+    // const { collectionId, artworkUrl100, collectionName, artistName } = resultadoRequest;
     const minInput = 2;
     return (
       <div data-testid="page-search">
-        <form>
-          <label htmlFor="banda">
-            Banda ou artista:
-            <input
-              type="text"
-              id="banda"
-              name="banda"
-              data-testid="search-artist-input"
-              onChange={ this.handleChange }
-              value={ banda }
-            />
-          </label>
-          <button
-            type="button"
-            data-testid="search-artist-button"
-            disabled={ banda.length >= minInput ? '' : 'disabled' }
-          >
-            Pesquisar
-          </button>
-        </form>
+        { onRequest && <LoadingMsg /> }
+        <FormSearch
+          banda={ banda }
+          minInput={ minInput }
+          handleChange={ this.handleChange }
+          searchArtistOrAlbum={ this.searchArtistOrAlbum }
+        />
+        { respostaPesquisa && (
+          <div>
+            <p>{msgPagina}</p>
+            {resultadoRequest
+              .map(({ collectionId, artworkUrl100, collectionName, artistName }) => (
+                <Link
+                  key={ collectionId }
+                  to={ `/album/${collectionId}` }
+                  data-testid={ `link-to-album-${collectionId}` }
+                >
+                  <AlbumCard
+                    url={ artworkUrl100 }
+                    banda={ artistName }
+                    album={ collectionName }
+                  />
+                </Link>
+              ))}
+          </div>
+        )}
       </div>
     );
   }

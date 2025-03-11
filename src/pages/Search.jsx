@@ -1,17 +1,17 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import searchAlbumsAPI from '../services/searchAlbumsAPI';
-import LoadingMsg from '../components/LoadingMsg';
-import FormSearch from '../components/FormSearch';
-import AlbumCard from '../components/AlbumCard';
+import React from "react";
+import { Link } from "react-router-dom";
+import searchAlbumsAPI from "../services/searchAlbumsAPI";
+import LoadingMsg from "../components/Loading";
+import FormSearch from "../components/FormSearch";
+import AlbumCard from "../components/AlbumCard";
 
 class Search extends React.Component {
   state = {
-    banda: '',
+    banda: "",
     onRequest: false,
     resultadoRequest: [],
     respostaPesquisa: false,
-    msgPagina: '',
+    msgPagina: "",
   };
 
   searchArtistOrAlbum = async () => {
@@ -23,7 +23,7 @@ class Search extends React.Component {
     if (searchAlbum.length === 0) {
       this.setState({
         onRequest: false,
-        msgPagina: 'Nenhum álbum foi encontrado',
+        msgPagina: "Nenhum álbum foi encontrado",
       });
     } else {
       this.setState({
@@ -33,7 +33,7 @@ class Search extends React.Component {
     }
     // console.log(searchAlbum);
     this.setState({
-      banda: '',
+      banda: "",
       resultadoRequest: searchAlbum,
       respostaPesquisa: true,
     });
@@ -47,35 +47,36 @@ class Search extends React.Component {
   };
 
   render() {
-    const { banda, onRequest, resultadoRequest,
-      respostaPesquisa, msgPagina } = this.state;
+    const { banda, onRequest, resultadoRequest, respostaPesquisa, msgPagina } =
+      this.state;
     const minInput = 2;
     return (
       <div data-testid="page-search">
-        { onRequest && <LoadingMsg /> }
+        {onRequest && <LoadingMsg />}
         <FormSearch
-          banda={ banda }
-          minInput={ minInput }
-          handleChange={ this.handleChange }
-          searchArtistOrAlbum={ this.searchArtistOrAlbum }
+          banda={banda}
+          minInput={minInput}
+          handleChange={this.handleChange}
+          searchArtistOrAlbum={this.searchArtistOrAlbum}
         />
-        { respostaPesquisa && (
+        {respostaPesquisa && (
           <div>
             <p>{msgPagina}</p>
-            {resultadoRequest
-              .map(({ collectionId, artworkUrl100, collectionName, artistName }) => (
+            {resultadoRequest.map(
+              ({ collectionId, artworkUrl100, collectionName, artistName }) => (
                 <Link
-                  key={ collectionId }
-                  to={ `/album/${collectionId}` }
-                  data-testid={ `link-to-album-${collectionId}` }
+                  key={collectionId}
+                  to={`/album/${collectionId}`}
+                  data-testid={`link-to-album-${collectionId}`}
                 >
                   <AlbumCard
-                    url={ artworkUrl100 }
-                    banda={ artistName }
-                    album={ collectionName }
+                    url={artworkUrl100}
+                    banda={artistName}
+                    album={collectionName}
                   />
                 </Link>
-              ))}
+              )
+            )}
           </div>
         )}
       </div>

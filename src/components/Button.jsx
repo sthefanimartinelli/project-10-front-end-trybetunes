@@ -1,17 +1,19 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-const Button = ({ datatestid, handleLogin, isDisable, children }) => {
+function Button({ datatestid, handleLogin, isDisable, children }) {
   return (
     <button
       type="button"
-      data-testid={datatestid}
-      onClick={handleLogin}
-      disabled={isDisable}
+      data-testid={ datatestid }
+      onClick={ handleLogin }
+      disabled={ isDisable }
     >
       {children}
     </button>
   );
-};
+}
+
+export default Button;
 
 Button.propTypes = {
   datatestid: PropTypes.string.isRequired,

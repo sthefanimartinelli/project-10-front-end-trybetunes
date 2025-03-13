@@ -1,22 +1,50 @@
-// import PropTypes from 'prop-types';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
+import { string, number, shape } from 'prop-types';
+import { Link } from 'react-router-dom';
 
-export default class AlbumCard extends Component {
-  render() {
-    const { url, banda, album } = this.props;
-    return (
-      <div>
-        <h2>{banda}</h2>
-        <h3>{album}</h3>
-        <img src={ url } alt={ album } />
-      </div>
-    );
-  }
+function AlbumCard({ album }) {
+  const {
+    artistId,
+    artistName,
+    collectionId,
+    collectionName,
+    collectionPrice,
+    artworkUrl100,
+    releaseDate,
+    trackCount,
+  } = album;
+
+  return (
+    <div>
+      <p>{ artistId }</p>
+      <p>{ artistName }</p>
+      <p>{ collectionId }</p>
+      <p>{ collectionName }</p>
+      <p>{ collectionPrice }</p>
+      <p>{ artworkUrl100 }</p>
+      <p>{ releaseDate }</p>
+      <p>{ trackCount }</p>
+      <Link
+        data-testid={ `link-to-album-${collectionId}` }
+        to={ `/album/${collectionId}` }
+      >
+        Ver
+      </Link>
+    </div>
+  );
 }
 
 AlbumCard.propTypes = {
-  album: PropTypes.string,
-  banda: PropTypes.string,
-  url: PropTypes.string,
-}.isRequired;
+  album: shape({
+    artistId: number,
+    artistName: string,
+    collectionId: number,
+    collectionName: string,
+    collectionPrice: number,
+    artworkUrl100: string,
+    releaseDate: string,
+    trackCount: number,
+  }).isRequired,
+};
+
+export default AlbumCard;

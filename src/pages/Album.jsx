@@ -1,32 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import getMusics from '../services/musicsAPI';
 import MusicCard from '../components/MusicCard';
+import Header from '../components/Header';
 
-class Album extends React.Component {
-  state = {
-    musicsList: [],
-  };
+function Album() {
+  [musicsList, setMusicsList] = useState([]);
 
-  async componentDidMount() {
-    this.searchMusics();
-  }
+  const { id } = useParams();
 
-  searchMusics = async () => {
-    const { match } = this.props;
-    // console.log(match);
-    const { params } = match;
-    const { id } = params;
-    const musics = await getMusics(id);
-    // console.log(musics);
-    this.setState({
-      musicsList: musics,
-    });
-  };
+  useEffect(() => {
+    const searchMusics = async () => {
+      const musics = await getMusics(id);
+      setMusicsList(musics);
+    };
 
-  render() {
-    const { musicsList } = this.state;
-    return (
+    searchMusics();
+  }, [id]);
+
+  return (
+    <>
+      <Header />
       <div data-testid="page-album">
         {musicsList.length > 0 && (
           <div>
@@ -44,11 +38,9 @@ class Album extends React.Component {
           </div>
         )}
       </div>
-    );
-  }
+    </>
+  );
 }
-
-export default Album;
 
 Album.propTypes = {
   match: PropTypes.shape({
@@ -57,3 +49,5 @@ Album.propTypes = {
     }),
   }),
 }.isRequired;
+
+export default Album;

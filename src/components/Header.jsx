@@ -4,13 +4,13 @@ import { getUser } from '../services/userAPI';
 import Loading from './Loading';
 
 function Header() {
-  [isLoading, setIsLoading] = useState(true);
-  [userName, setUserName] = useState(undefined);
+  const [isLoading, setIsLoading] = useState(true);
+  const [userName, setUserName] = useState(undefined);
 
   useEffect(() => {
     const fetchUser = async () => {
-      const { userName } = await getUser();
-      setUserName(userName);
+      const { name } = await getUser();
+      setUserName(name);
       setIsLoading(false);
     };
     fetchUser();

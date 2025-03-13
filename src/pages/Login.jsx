@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import { createUser } from "../services/userAPI";
-import Button from "../components/Button";
-import Loading from "../components/Loading";
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { createUser } from '../services/userAPI';
+import Button from '../components/Button';
+import Loading from '../components/Loading';
 
-const Login = () => {
-  const [user, setUser] = useState("");
+function Login() {
+  const [user, setUser] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
   const minNameInput = 3;
@@ -18,7 +18,7 @@ const Login = () => {
     setIsLoading(true);
     await createUser({ name: user });
     setIsLoading(false);
-    history.push("/search");
+    history.push('/search');
   };
 
   if (isLoading) return <Loading />;
@@ -29,20 +29,20 @@ const Login = () => {
         type="text"
         name="loginName"
         id="loginName"
-        value={user}
-        onChange={handleChange}
+        value={ user }
+        onChange={ handleChange }
         data-testid="login-name-input"
         placeholder="Qual é o seu nome?"
       />
       <Button
         datatestid="login-submit-button"
-        handleLogin={handleLogin}
-        isDisable={user.length < minNameInput}
+        handleLogin={ handleLogin }
+        isDisable={ user.length < minNameInput }
       >
         Entrar
       </Button>
     </div>
   );
-};
+}
 
 export default Login;
